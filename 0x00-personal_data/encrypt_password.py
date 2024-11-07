@@ -1,38 +1,30 @@
 #!/usr/bin/env python3
 """
-    Encrypt a string
+Implementing the hash_password function to expect one string
+argument name password and will return a salted, hashed password,
+which is a byte string.
+
+Using the bcrypt package to perform hashing (with hashpw)
 """
 import bcrypt
 
 
-def hash_password(password: str = '') -> bytes:
+def hash_password(password: str) -> bytes:
     """
-        Hashed the password
-
-        Args:
-            password: string to hashed
-
-        Return:
-            hashed password
+    Taking in a password to hash and returing a salted
+    byte string.
     """
-    hashed = bcrypt.hashpw(password.encode('utf-8'),
-                           bcrypt.gensalt(prefix=b"2b"))
+    password = bytes(password, 'utf-8')
+    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 
     return hashed
 
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """
-        Look if is valid password
-
-        Args:
-            hashed_password: Password encrypt
-            password: string to hashed
-
-        Return:
-            True If this are equals
+    Validating if provided password is a match to the hashed password
     """
-    valid = bcrypt.checkpw(password.encode('utf-8'),
-                           hashed_password)
-
-    return valid
+    if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+        return True
+    else:
+        return False
