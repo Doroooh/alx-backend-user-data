@@ -12,7 +12,7 @@ AUTH = Auth()
 
 @app.route('/', methods=['GET'], strict_slashes=False)
 def index() -> str:
-    """ GET /
+    """ GET 
     Return:
       - JSON payload
     """
@@ -21,9 +21,8 @@ def index() -> str:
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def users() -> str:
-    """ POST /users
-    Registers new user with email and pswd in x-www-form-urlencoded request,
-    or finds if user already registered based on email
+    """ POST: Register a new user with the email and password in the x-www-form-urlencoded request,
+    It also finds out if a user already has an existing registration  on email provided
     Return:
       - JSON payload
     """
@@ -32,44 +31,43 @@ def users() -> str:
     form_data = request.form
 
     if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
+        return jsonify({"message": "input email"}), 400
     elif "password" not in form_data:
-        return jsonify({"message": "password required"}), 400
+        return jsonify({"message": "input password"}), 400
     else:
 
         email = request.form.get("email")
-        pswd = request.form.get("password")
+        paswd = request.form.get("password")
 
         try:
-            new_user = AUTH.register_user(email, pswd)
+            new_user = AUTH.register_user(email, paswd)
             return jsonify({
                 "email": new_user.email,
                 "message": "user created"
             })
         except ValueError:
-            return jsonify({"message": "email already registered"}), 400
+            return jsonify({"message": " existing registration"}), 400
 
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
-    """ POST /sessions
-    Creates new session for user, stores as cookie
-    Email and pswd fields in x-www-form-urlencoded request
+    """ POST: will create a new session for the user, stores as cookie
+    Email and paswd fields in x-www-form-urlencoded request
     Return:
       - JSON payload
     """
     form_data = request.form
 
     if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
+        return jsonify({"message": "input email"}), 400
     elif "password" not in form_data:
-        return jsonify({"message": "password required"}), 400
+        return jsonify({"message": "input password"}), 400
     else:
 
         email = request.form.get("email")
         pswd = request.form.get("password")
 
-        if AUTH.valid_login(email, pswd) is False:
+        if AUTH.valid_login(email, paswd) is False:
             abort(401)
         else:
             session_id = AUTH.create_session(email)
@@ -84,10 +82,9 @@ def login() -> str:
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> None:
-    """ DELETE /sessions
-    Destroys session by finding session_id (key in cookie)
+    """ DELETE: This destroy a session by finding session_id (key in cookie)
     Return:
-      - Redirects user to status route (GET /)
+      - Redirect user to status route (GET /)
     """
     session_id = request.cookies.get('session_id')
     if session_id:
@@ -157,11 +154,11 @@ def update_password() -> str:
     form_data = request.form
 
     if "email" not in form_data:
-        return jsonify({"message": "email required"}), 400
+        return jsonify({"message": "input email"}), 400
     if "reset_token" not in form_data:
-        return jsonify({"message": "reset_token required"}), 400
+        return jsonify({"message": "input password reset_token"}), 400
     if "new_password" not in form_data:
-        return jsonify({"message": "new_password required"}), 400
+        return jsonify({"message": "create new_password"}), 400
     else:
 
         email = request.form.get("email")
@@ -172,7 +169,7 @@ def update_password() -> str:
             AUTH.update_password(reset_token, new_pswd)
             return jsonify({
                 "email": email,
-                "message": "Password updated"
+                "message": "Login Password updated"
             }), 200
         except ValueError:
             abort(403)
