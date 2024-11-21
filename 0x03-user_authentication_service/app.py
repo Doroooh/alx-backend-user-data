@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Route module for the API """
+""" A route module for API """
 from flask import Flask, jsonify, request, abort, redirect, url_for
 from sqlalchemy.orm.exc import NoResultFound
 
