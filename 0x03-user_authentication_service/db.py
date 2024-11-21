@@ -50,7 +50,7 @@ class DB:
             'email',
             'hashed_password',
             'session_id',
-            'resetn'
+            'reset_token'
             ]
 
         for arg in kwargs:
@@ -76,7 +76,7 @@ class DB:
             'email',
             'hashed_password',
             'session_id',
-            'resetn'
+            'reset_token'
             ]
 
         for w, y in kwargs.items():
