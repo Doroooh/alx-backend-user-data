@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Model for DB
+""" Model for the database
 """
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,7 +11,7 @@ from user import Base, User
 
 
 class DB:
-    """ DB class """
+    """ database class """
 
     def __init__(self):
         """ Instance """
@@ -23,7 +23,7 @@ class DB:
 
     @property
     def _session(self):
-        """ Sets up session """
+        """ Setting up a session """
 
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
@@ -31,7 +31,7 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """ Adds user to db """
+        """ Adding user to the database """
 
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
@@ -39,9 +39,9 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-        """ Returns first row found in users table based on keyword args """
+        """ Return the first row found in the users table based on keyword args """
 
-        """ Handle invalid requests """
+        """ Handling an invalid request """
         if not kwargs:
             raise InvalidRequestError
 
@@ -50,7 +50,7 @@ class DB:
             'email',
             'hashed_password',
             'session_id',
-            'reset_token'
+            'resetn'
             ]
 
         for arg in kwargs:
@@ -67,7 +67,7 @@ class DB:
             raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """ Finds user record and updates attributes """
+        """ Find user record and update attributes """
 
         user_to_update = self.find_user_by(id=user_id)
 
@@ -76,12 +76,12 @@ class DB:
             'email',
             'hashed_password',
             'session_id',
-            'reset_token'
+            'resetn'
             ]
 
-        for k, v in kwargs.items():
-            if k in users_columns:
-                setattr(user_to_update, k, v)
+        for w, y in kwargs.items():
+            if w in users_columns:
+                setattr(user_to_update, w, y)
             else:
                 raise ValueError
 
