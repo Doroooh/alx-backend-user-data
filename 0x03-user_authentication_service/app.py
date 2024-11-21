@@ -65,7 +65,7 @@ def login() -> str:
     else:
 
         email = request.form.get("email")
-        pswd = request.form.get("password")
+        paswd = request.form.get("password")
 
         if AUTH.valid_login(email, paswd) is False:
             abort(401)
@@ -82,7 +82,7 @@ def login() -> str:
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> None:
-    """ DELETE: This destroy a session by finding session_id (key in cookie)
+    """ DELETE: This destroys a session by finding session_id (key in cookie)
     Return:
       - Redirect user to status route (GET /)
     """
@@ -137,7 +137,7 @@ def get_reset_password_token() -> str:
             reset_token = AUTH.get_reset_password_token(email)
             return jsonify({
                 "email": email,
-                "reset_token": reset_token
+                "resetn": reset_token
             }), 200
         except ValueError:
             abort(403)
@@ -156,17 +156,17 @@ def update_password() -> str:
     if "email" not in form_data:
         return jsonify({"message": "input email"}), 400
     if "reset_token" not in form_data:
-        return jsonify({"message": "input password reset_token"}), 400
+        return jsonify({"message": "input password resetn"}), 400
     if "new_password" not in form_data:
         return jsonify({"message": "create new_password"}), 400
     else:
 
         email = request.form.get("email")
-        reset_token = request.form.get("reset_token")
-        new_pswd = request.form.get("new_password")
+        resetn = request.form.get("resetn")
+        new_paswd = request.form.get("new_password")
 
         try:
-            AUTH.update_password(reset_token, new_pswd)
+            AUTH.update_password(resetn, new_paswd)
             return jsonify({
                 "email": email,
                 "message": "Login Password updated"
